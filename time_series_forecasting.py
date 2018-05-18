@@ -2,9 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from datetime import datetime
-
-
-# Useful seaborn site https://seaborn.pydata.org/tutorial/distributions.html
+from pandas import TimeGrouper
+from pandas.plotting import lag_plot
 
 
 def parser(x):
@@ -32,17 +31,20 @@ print("#### Sales of shampoo ####\n")
 series_shampoo = pd.read_csv('data/sales-of-shampoo-over-a-three-ye.csv',
                              header=0, index_col=0, parse_dates=[0], nrows=36,
                              squeeze=True, date_parser=parser)
-print(series_shampoo.head())
+print(series_shampoo.head(10))
 print("\n")
 print("Stats:")
 print(series_shampoo.describe())
-
 print("Nr of NaNs = %d" % series_shampoo.isnull().sum())
 
-
-# series_shampoo_month = series_shampoo.groupby(pd.Grouper(freq="M"))
+series_shampoo_groups = series_shampoo.groupby(TimeGrouper('A'))
+years = pd.DataFrame()
+for name, group in series_shampoo_groups:
+    years[name.year] = group.values
 # plt.plot(series_shampoo)
 # plt.hist(series_shampoo)
 # sns.distplot(series_shampoo)
-# plt.boxplot(series_shampoo)
+# years.boxplot()
+# plt.matshow(years)
+lag_plot(series_shampoo)
 plt.show()
