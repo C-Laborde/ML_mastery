@@ -4,6 +4,8 @@ import seaborn as sns
 from datetime import datetime
 from pandas import TimeGrouper
 from pandas.plotting import lag_plot
+from pandas import concat
+from pandas.plotting import autocorrelation_plot
 
 
 def parser(x):
@@ -13,6 +15,8 @@ def parser(x):
 series = pd.read_csv('data/daily-total-female-births-in-cal.csv', header=0,
                      index_col=0, parse_dates=True, squeeze=True)
 
+
+# ### Inspect the data and print some basic information
 print("#### Daily total female births ####\n")
 print(series.head())
 print("\n")
@@ -37,14 +41,48 @@ print("Stats:")
 print(series_shampoo.describe())
 print("Nr of NaNs = %d" % series_shampoo.isnull().sum())
 
+# ### Time series plots
+
+# We group the data per year
 series_shampoo_groups = series_shampoo.groupby(TimeGrouper('A'))
 years = pd.DataFrame()
 for name, group in series_shampoo_groups:
     years[name.year] = group.values
+
+fig, ((ax1, ax2), (ax3, ax4),
+      (ax5, ax6), (ax7, ax8)) = plt.subplots(4, 2, sharex=False, sharey=False,
+                                             figsize=(16, 28))
+
+# Line plots
 # plt.plot(series_shampoo)
-# plt.hist(series_shampoo)
-# sns.distplot(series_shampoo)
-# years.boxplot()
-# plt.matshow(years)
-lag_plot(series_shampoo)
+# years.plot(subplots=True, legend=False)
+ax1.plot(series_shampoo)
+ax1.set(xlabel="Date", ylabel="Sales", title="Line plot")
+
+ax2.plot(years)
+ax2.set(xlabel="Month", ylabel="Sales", title="Line plot per year")
+ax2.legend(["Year 1", "Year 2", "Year 3"], loc="upper left")
+
+
+# Histograms and density plot
+# ax3.hist(series_shampoo, bins=20)
+sns.distplot(series_shampoo, rug=True, bins=20, ax=ax3)
+ax3.set(xlabel="Sales", ylabel="Counts", title="Histogram and density plot")
+# series_shampoo.plot(kind="kde")
+
+# Box and whisker plot
+ax4.boxplot(years)
+ax4.set(xlabel="Years", ylabel="Sales", title="Box and whisker plot")
+
+# Heatmap plot
+ax5.matshow(years, interpolation=None, aspect='auto')
+
+# Lag plot
+lag_plot(series_shampoo, ax=ax6)
+
+# Autocorrelation plot
+autocorrelation_plot(series_shampoo, ax=ax7)
+
+fig.subplots_adjust(hspace=0.6)
+# plt.tight_layout()
 plt.show()
