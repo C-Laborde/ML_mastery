@@ -49,13 +49,15 @@ years = pd.DataFrame()
 for name, group in series_shampoo_groups:
     years[name.year] = group.values
 
+years.columns = ["2001", "2002", "2003"]
+print(years.head())
+print(years.columns)
+# Prepare the figure where the plots will be placed
 fig, ((ax1, ax2), (ax3, ax4),
       (ax5, ax6), (ax7, ax8)) = plt.subplots(4, 2, sharex=False, sharey=False,
                                              figsize=(16, 28))
 
 # Line plots
-# plt.plot(series_shampoo)
-# years.plot(subplots=True, legend=False)
 ax1.plot(series_shampoo)
 ax1.set(xlabel="Date", ylabel="Sales", title="Line plot")
 
@@ -71,7 +73,8 @@ ax3.set(xlabel="Sales", ylabel="Counts", title="Histogram and density plot")
 # series_shampoo.plot(kind="kde")
 
 # Box and whisker plot
-ax4.boxplot(years)
+# ax4.boxplot(years, column=["2001", "2002", "2003"])
+years.boxplot(column=["2001", "2002", "2003"], ax=ax4)
 ax4.set(xlabel="Years", ylabel="Sales", title="Box and whisker plot")
 
 # Heatmap plot
