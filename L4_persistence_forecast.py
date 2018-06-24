@@ -7,10 +7,6 @@ from pandas.plotting import lag_plot
 from pandas.plotting import autocorrelation_plot
 
 
-def parser(x):
-    return datetime.strptime('200'+x, '%Y-%m')
-
-
 series = pd.read_csv('data/daily-total-female-births-in-cal.csv', header=0,
                      index_col=0, parse_dates=True, squeeze=True)
 series.index = pd.to_datetime(series.index)
@@ -41,19 +37,14 @@ for name, group in series_groups:
     # pd.Series to fix difference in columns length
     months[name.month] = pd.Series(group.values)
 
-# years.columns = ["2001", "2002", "2003"]
-
 # Prepare the figure where the plots will be placed
-fig, ((ax1, ax2), (ax3, ax4),
-      (ax5, ax6)) = plt.subplots(3, 2, sharex=False, sharey=False,
-                                             figsize=(16, 28))
+fig, ((ax1, ax2), (ax3, ax4), (ax5, ax6)) = plt.subplots(3, 2, figsize=(16, 28))
 
 # Line plots
 ax1.plot(series)
 ax1.set(xlabel="Date", ylabel="Daily Births", title="Line plot")
 
 # Histograms and density plot
-# ax2.hist(series_shampoo, bins=20)
 sns.distplot(series, rug=True, bins=20, ax=ax2)
 ax2.set(xlabel="Sales", ylabel="Counts", title="Histogram and density plot")
 
@@ -78,8 +69,7 @@ ax5.set(xlabel="Births(t)", ylabel="Births(t+1)", title="Lag plot")
 
 # Autocorrelation plot
 autocorrelation_plot(series, ax=ax6)
-ax6.set(title="Autocorrelation plot", ylim=(-1, 1))
+ax6.set(title="Autocorrelation plot", ylim=(-0.5, 0.5))
 
 fig.subplots_adjust(hspace=0.6)
-# plt.tight_layout()
 plt.show()
