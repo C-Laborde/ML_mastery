@@ -34,7 +34,7 @@ x_test, y_test = test[:, 0], test[:, 1]
 prediction = x_test
 
 test_error = sqrt(mean_squared_error(y_test, prediction))
-print('Test MSE: %.3f' % test_error)
+print('Test RMSE: %.3f' % test_error)
 
 plt.figure()
 plt.plot(x_train.tolist() + [None]*len(x_test))
