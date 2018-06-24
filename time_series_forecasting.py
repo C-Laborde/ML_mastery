@@ -87,6 +87,9 @@ fig.colorbar(img5, ax=ax5, aspect=5)
 
 # Lag plot
 lag_plot(series_shampoo, ax=ax6)
+diagonal = range(int(series_shampoo.min()), int(series_shampoo.max()))
+ax6.plot(diagonal, diagonal, '--k')
+ax6.set(xlabel="Sales(t)", ylabel="Sales(t+1)", title="Lag plot")
 
 # Autocorrelation plot
 autocorrelation_plot(series_shampoo, ax=ax7)
