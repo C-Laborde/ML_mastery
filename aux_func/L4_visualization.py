@@ -19,7 +19,8 @@ def describe_and_plot(series):
     print('Size = %d \n' % series.size)
 
     interest_date = "1959-06-21"
-    print("Nr of births on %s = %d \n" % (interest_date, series[interest_date]))
+    print("Nr of births on %s = %d \n" % (interest_date,
+                                          series[interest_date]))
 
     print("Stats:")
     print(series.describe())
@@ -27,8 +28,7 @@ def describe_and_plot(series):
 
     print("\n")
 
-
-    # ### Time series plots
+    # Time series plots
 
     # We group the data per month
     series_groups = series.groupby(TimeGrouper('M'))
@@ -47,11 +47,13 @@ def describe_and_plot(series):
 
     # Histograms and density plot
     sns.distplot(series, rug=True, bins=20, ax=ax2)
-    ax2.set(xlabel="Sales", ylabel="Counts", title="Histogram and density plot")
+    ax2.set(xlabel="Sales", ylabel="Counts",
+            title="Histogram and density plot")
 
     # Box and whisker plot
     months.boxplot(ax=ax3)
-    ax3.set(xlabel="Months", ylabel="Daily Births", title="Box and whisker plot")
+    ax3.set(xlabel="Months", ylabel="Daily Births",
+            title="Box and whisker plot")
 
     # Heatmap plot
     img4 = ax4.matshow(months, interpolation=None, aspect='auto')
