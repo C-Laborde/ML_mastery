@@ -4,7 +4,6 @@ import seaborn as sns
 from datetime import datetime
 from pandas import TimeGrouper
 from pandas.plotting import lag_plot
-from pandas import concat
 from pandas.plotting import autocorrelation_plot
 
 
@@ -93,6 +92,9 @@ ax6.set(xlabel="Sales(t)", ylabel="Sales(t+1)", title="Lag plot")
 
 # Autocorrelation plot
 autocorrelation_plot(series_shampoo, ax=ax7)
+ax7.set(title="Autocorrelation plot", ylim=(-1, 1))
+
+ax8.remove()
 
 fig.subplots_adjust(hspace=0.6)
 # plt.tight_layout()
