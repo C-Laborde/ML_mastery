@@ -50,8 +50,7 @@ for name, group in series_shampoo_groups:
     years[name.year] = group.values
 
 years.columns = ["2001", "2002", "2003"]
-print(years.head())
-print(years.columns)
+
 # Prepare the figure where the plots will be placed
 fig, ((ax1, ax2), (ax3, ax4),
       (ax5, ax6), (ax7, ax8)) = plt.subplots(4, 2, sharex=False, sharey=False,
@@ -63,7 +62,7 @@ ax1.set(xlabel="Date", ylabel="Sales", title="Line plot")
 
 ax2.plot(years)
 ax2.set(xlabel="Month", ylabel="Sales", title="Line plot per year")
-ax2.legend(["Year 1", "Year 2", "Year 3"], loc="upper left")
+ax2.legend(["2001", "2002", "2003"], loc="upper left")
 
 
 # Histograms and density plot
@@ -78,7 +77,13 @@ years.boxplot(column=["2001", "2002", "2003"], ax=ax4)
 ax4.set(xlabel="Years", ylabel="Sales", title="Box and whisker plot")
 
 # Heatmap plot
-ax5.matshow(years, interpolation=None, aspect='auto')
+img5 = ax5.matshow(years, interpolation=None, aspect='auto')
+xaxis = [2000, 2001, 2002, 2003]
+yaxis = range(-1, 13, 2)
+ax5.set(xlabel="Year", ylabel="Month", xticklabels=xaxis, yticklabels=yaxis,
+        title="Heatmap plot")
+ax5.xaxis.tick_bottom()
+fig.colorbar(img5, ax=ax5, aspect=5)
 
 # Lag plot
 lag_plot(series_shampoo, ax=ax6)
