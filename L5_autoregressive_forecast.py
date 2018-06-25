@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from datetime import datetime
 from pandas.plotting import autocorrelation_plot
+from pandas.plotting import lag_plot
 
 
 def parser(x):
@@ -19,10 +20,18 @@ time step.
 print(series.tail())
 series.column = ['Temp']
 
-print(series.isnull().sum())
+plt.figure()
 plt.plot(series)
+plt.ylabel("Temperature")
+plt.xlabel("Year")
 
 # Check autocorrelation
-autocorrelation_plot(series)
+fig, ((ax1, ax2)) = plt.subplots(2, 1)
+autocorrelation_plot(series, ax=ax1)
+diag = range(int(series.min()), int(series.max()))
+lag_plot(series, ax=ax2)
+plt.plot(diag, diag, '--k')
+
+fig.subplots_adjust(hspace=0.4)
 
 plt.show()
