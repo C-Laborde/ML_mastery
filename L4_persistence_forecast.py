@@ -1,5 +1,5 @@
 import pandas as pd
-from aux_func.L4_visualization import describe_and_plot
+from utils.L4_visualization import describe_and_plot
 import matplotlib.pyplot as plt
 from sklearn.metrics import mean_squared_error
 from math import sqrt
