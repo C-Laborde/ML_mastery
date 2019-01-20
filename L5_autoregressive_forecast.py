@@ -1,12 +1,9 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import datetime
 from pandas.plotting import autocorrelation_plot
 from pandas.plotting import lag_plot
-
-
-def parser(x):
-    return datetime.strptime('200'+x, '%Y-%m')
+from sklearn.metrics import mean_squared_error
+from utils.persistence_model import persistence_model
 
 
 series = pd.read_csv('data/daily-minimum-temperatures.csv', header=0,
@@ -39,6 +36,29 @@ diag = range(int(series.min()), int(series.max()))
 lag_plot(series, ax=ax2)
 plt.plot(diag, diag, '--k')
 fig.subplots_adjust(hspace=0.4)
+
+
+# ###### Persistence model as baseline ########
+
+# train-test split (train not required in this case but for rutine we keep it)
+X = df.values
+train, test = X[1:len(X)-7], X[len(X)-7:]
+X_train, y_train = train[:, 0], train[:, 1]
+X_test, y_test = test[:, 0], test[:, 1]
+
+# walk-forward validation
+predictions = list()
+for x in X_test:
+    yhat = persistence_model(x)
+    predictions.append(yhat)
+test_score = mean_squared_error(y_test, predictions)
+print("Test MSE: %.3f" % test_score)
+
+# plot predictions vs expected
+fig, ax = plt.subplots(1, 1)
+ax.plot(y_test)
+ax.plot(predictions, color="green")
+ax.legend()
 
 
 # model = AR()
